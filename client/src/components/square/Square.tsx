@@ -20,6 +20,7 @@ function Square({
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
+    if (clicked) setClicked(false);
     if (transitionStart !== undefined && active) {
       const timer = setTimeout(() => {
         setClicked(true);
@@ -35,17 +36,12 @@ function Square({
   const handleClick = () => {
     if (!clicked && !ignoreInputs && (visible || active)) {
       setClicked(true);
+      onClick?.();
     }
-    //  else if (!clicked && visible && !ignoreInputs) {
-    //   setClicked(true);
-    // }
   };
 
   return (
-    <div
-      className={`square ${visible || active ? "" : "invisible"}`}
-      onClick={onClick}
-    >
+    <div className={`square ${visible || active ? "" : "invisible"}`}>
       <button
         disabled={ignoreInputs}
         className={`${clicked ? "clicked" : ""}`}
@@ -56,16 +52,3 @@ function Square({
 }
 
 export default Square;
-
-// import React from "react";
-// import "./square.css";
-
-// interface SquareProps {
-//   clicked: boolean;
-// }
-
-// const Square: React.FC<SquareProps> = ({ clicked }) => {
-//   return <button className={`square ${clicked ? "clicked" : ""}`}></button>;
-// };
-
-// export default Square;
