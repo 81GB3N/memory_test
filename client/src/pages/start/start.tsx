@@ -25,8 +25,8 @@ export default function Start({ onClick }: StartProps) {
 
   const testOptions = (
     <>
-      <Button onClick={() => handleOptionClick(true)}>Priekiu</Button>
-      <Button onClick={() => handleOptionClick(false)}>Galu</Button>
+      <Button onClick={() => handleOptionClick(true)}>Į priekį</Button>
+      <Button onClick={() => handleOptionClick(false)}>Atbulomis</Button>
     </>
   );
 
