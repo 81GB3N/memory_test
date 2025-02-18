@@ -8,9 +8,9 @@ const square_size = 100;
 
 export default function FillSquares() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [numOfVisibleSquares, setNumOfVisibleSquares] = useState<number>(2);
-  const [numOfActiveSquares, setNumOfActiveSquares] = useState<number>(1); // set some ratio
-  const [numOfSquares, setNumOfSquares] = useState<number>(10);
+  const [numOfVisibleSquares, setNumOfVisibleSquares] = useState<number>(10);
+  const [numOfActiveSquares, setNumOfActiveSquares] = useState<number>(2); // set some ratio
+  const [numOfSquares, setNumOfSquares] = useState<number>(numOfVisibleSquares);
   const [inputsDisabled, setInputsDisabled] = useState<boolean>(true);
   const [showScorePage, setShowScorePage] = useState<boolean>(false);
   const { forward } = usePageContext();
@@ -28,32 +28,6 @@ export default function FillSquares() {
     }
   }, []);
 
-  // //finds a set number of squares to show
-  // const activeSquares = new Set<number>();
-  // while (activeSquares.size < numOfActiveSquares) {
-  //   const randomIndex = Math.floor(Math.random() * numOfSquares);
-  //   activeSquares.add(randomIndex);
-  // }
-
-  // const visibleSquares = new Set<number>();
-  // while (visibleSquares.size < numOfVisibleSquares - numOfActiveSquares) {
-  //   const randomIndex = Math.floor(Math.random() * numOfSquares);
-  //   if (!activeSquares.has(randomIndex)) {
-  //     visibleSquares.add(randomIndex);
-  //   }
-  // }
-
-  // const animationInterval: Map<number, number> = new Map();
-
-  // //each square gets an animation interval
-  // let counter = 2; //set some delay time 2 * 750ms
-  // let loadingTime = 0;
-  // for (const visibleIndex of activeSquares) {
-  //   loadingTime = Math.max(loadingTime, transition_time * counter);
-  //   animationInterval.set(visibleIndex, transition_time * counter);
-  //   counter++;
-  // }
-
   // loadingTime -= 2 * transition_time;
   const [activeSquares, setActiveSquares] = useState<Set<number>>(new Set());
   const [visibleSquares, setVisibleSquares] = useState<Set<number>>(new Set());
@@ -61,6 +35,7 @@ export default function FillSquares() {
 
   useEffect(() => {
     const newActiveSquares = new Set<number>();
+    setInputsDisabled(true);
     setActiveSquares(new Set());
     setVisibleSquares(new Set());
 
@@ -78,7 +53,7 @@ export default function FillSquares() {
     }
 
     const newAnimationInterval: Map<number, number> = new Map();
-    let counter = 2;
+    let counter = 3;
     let newLoadingTime = 0;
     for (const visibleIndex of newActiveSquares) {
       newLoadingTime = Math.max(newLoadingTime, transition_time * counter);
@@ -86,13 +61,15 @@ export default function FillSquares() {
       counter++;
     }
 
-    newLoadingTime -= 2 * transition_time;
+    newLoadingTime += 1 * transition_time;
+
     animationInterval.current = newAnimationInterval;
 
     setActiveSquares(newActiveSquares);
     setVisibleSquares(newVisibleSquares);
 
     const timer = setTimeout(() => {
+      console.log("inputs are now enabled");
       setInputsDisabled(false);
     }, newLoadingTime);
 
@@ -104,6 +81,7 @@ export default function FillSquares() {
     activeSquaresStack.reverse();
   }
   const checkIndex = (index: number) => {
+    console.log(activeSquaresStack);
     if (activeSquaresStack[activeSquaresStack.length - 1] === index) {
       activeSquaresStack.pop();
       if (activeSquaresStack.length === 0) {
@@ -117,7 +95,11 @@ export default function FillSquares() {
   };
 
   if (showScorePage) {
-    return <ScorePage score={numOfActiveSquares} />;
+    return (
+      <ScorePage
+        score={numOfActiveSquares === 2 ? 0 : numOfActiveSquares - 1}
+      />
+    );
   }
 
   return (
@@ -130,7 +112,7 @@ export default function FillSquares() {
             visible={visibleSquares.has(index)}
             transitionStart={animationInterval.current?.get(index) ?? undefined}
             ignoreInputs={inputsDisabled}
-            onClick={() => checkIndex(index)}
+            onClick={() => (!inputsDisabled ? checkIndex(index) : null)}
           />
         ))}
       </div>
