@@ -1,0 +1,33 @@
+@import url('../../index.css');
+
+button{
+    all: unset;
+    border-radius: 5px;
+    background-color: rgb(112, 112, 238);
+    width: var(--square-size);
+    height: var(--square-size);
+    display: block;
+    box-shadow: 3px 3px rgba(12, 195, 251, 0.6);
+    
+}
+
+.square{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.invisible{
+    visibility: hidden;
+}
+
+button.clicked{
+    background-color: rgb(243, 248, 109);
+    transform: scale(1.1);
+    transition: background-color 0.75s ease, transform 0.75s ease;
+}
+
+button {
+    transition: background-color 0.75s ease, transform 0.75s ease;
+}

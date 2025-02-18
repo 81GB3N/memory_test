@@ -1,0 +1,16 @@
+.display_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.result{
+    color: rgb(205, 205, 205);
+    /* width: 300px; */
+    padding: 30px 50px;
+    font-size: 3rem;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 600;
+}

@@ -1,0 +1,12 @@
+.btn{
+    border: 5px solid rgb(205, 205, 205);
+    background-color: rgb(37, 37, 37);
+    color: rgb(205, 205, 205);
+    border-radius: 50px;
+    width: 300px;
+    padding: 30px 50px;
+    font-size: 3rem;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 700;
+    box-shadow: 5px 5px 5px rgb(220, 220, 220, 0.5);
+}
