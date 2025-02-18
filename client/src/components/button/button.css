@@ -10,3 +10,14 @@
     font-weight: 700;
     box-shadow: 5px 5px 5px rgb(220, 220, 220, 0.5);
 }
+
+.btn:hover{
+    font-size: 3.2rem;
+    transition: font-size 0.3s ease;
+    cursor: pointer;
+}
+
+.btn{
+    font-size: 3rem;
+    transition: font-size 0.3s ease;
+}
