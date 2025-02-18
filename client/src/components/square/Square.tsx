@@ -20,7 +20,11 @@ function Square({
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
-    if (clicked) setClicked(false);
+    setClicked(false);
+  }, [visible, active]);
+
+  useEffect(() => {
+    setClicked(false);
     if (transitionStart !== undefined && active) {
       const timer = setTimeout(() => {
         setClicked(true);
