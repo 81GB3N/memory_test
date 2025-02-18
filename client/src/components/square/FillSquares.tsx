@@ -2,6 +2,7 @@ import Square from "./Square";
 import { useState, useEffect, useRef } from "react";
 import { usePageContext } from "../../pages/start/startPageContext";
 import ScorePage from "../../pages/ScorePage";
+import correctSound from "../../assets/sound/correct.mp3";
 
 export const transition_time = 750;
 const square_size = 100;
@@ -80,17 +81,26 @@ export default function FillSquares() {
   if (forward) {
     activeSquaresStack.reverse();
   }
+
+  function showNextPage() {
+    const audio = new Audio(correctSound);
+    audio.play();
+    setTimeout(() => {
+      setNumOfVisibleSquares(
+        numOfActiveSquares <= 3
+          ? numOfVisibleSquares + 2
+          : numOfVisibleSquares + 1
+      );
+      setNumOfActiveSquares(numOfActiveSquares + 1);
+    }, 2000);
+  }
+
   const checkIndex = (index: number) => {
     console.log(activeSquaresStack);
     if (activeSquaresStack[activeSquaresStack.length - 1] === index) {
       activeSquaresStack.pop();
       if (activeSquaresStack.length === 0) {
-        setNumOfVisibleSquares(
-          numOfActiveSquares <= 3
-            ? numOfVisibleSquares + 2
-            : numOfVisibleSquares + 1
-        );
-        setNumOfActiveSquares(numOfActiveSquares + 1);
+        showNextPage();
       }
       console.log("correct");
     } else {
