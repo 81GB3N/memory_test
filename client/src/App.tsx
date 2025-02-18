@@ -9,6 +9,7 @@ function App() {
 
   const handleStartClick = () => {
     setSelectedPage("test");
+    document.documentElement.requestFullscreen();
   };
 
   return (
