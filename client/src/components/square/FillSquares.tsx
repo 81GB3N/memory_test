@@ -85,7 +85,11 @@ export default function FillSquares() {
     if (activeSquaresStack[activeSquaresStack.length - 1] === index) {
       activeSquaresStack.pop();
       if (activeSquaresStack.length === 0) {
-        setNumOfVisibleSquares(numOfVisibleSquares + 2);
+        setNumOfVisibleSquares(
+          numOfActiveSquares <= 3
+            ? numOfVisibleSquares + 2
+            : numOfVisibleSquares + 1
+        );
         setNumOfActiveSquares(numOfActiveSquares + 1);
       }
       console.log("correct");
