@@ -14,6 +14,7 @@ export default function FillSquares() {
   const [numOfSquares, setNumOfSquares] = useState<number>(numOfVisibleSquares);
   const [inputsDisabled, setInputsDisabled] = useState<boolean>(true);
   const [showScorePage, setShowScorePage] = useState<boolean>(false);
+  const [roundCounter, setRoundCounter] = useState(0);
   const { forward } = usePageContext();
 
   // //update the number of squares based on the height of the container
@@ -35,7 +36,7 @@ export default function FillSquares() {
   const animationInterval = useRef<Map<number, number>>(new Map());
 
   useEffect(() => {
-    const newActiveSquares = new Set<number>();
+    let newActiveSquares = new Set<number>();
     setInputsDisabled(true);
     setActiveSquares(new Set());
     setVisibleSquares(new Set());
@@ -45,7 +46,7 @@ export default function FillSquares() {
       newActiveSquares.add(randomIndex);
     }
 
-    const newVisibleSquares = new Set<number>();
+    let newVisibleSquares = new Set<number>();
     while (newVisibleSquares.size < numOfVisibleSquares - numOfActiveSquares) {
       const randomIndex = Math.floor(Math.random() * numOfSquares);
       if (!newActiveSquares.has(randomIndex)) {
@@ -66,8 +67,18 @@ export default function FillSquares() {
 
     animationInterval.current = newAnimationInterval;
 
+    // const activeSquaresArray = Array.from(newActiveSquares);
+    // activeSquaresArray[activeSquaresArray.length - 1] = 5;
+    // newActiveSquares = new Set(activeSquaresArray);
+
+    // const visibleSquares = Array.from(newActiveSquares);
+    // visibleSquares[visibleSquares.length - 1] = 5;
+    // newVisibleSquares = new Set(visibleSquares);
+
     setActiveSquares(newActiveSquares);
     setVisibleSquares(newVisibleSquares);
+
+    console.log(newActiveSquares);
 
     const timer = setTimeout(() => {
       console.log("inputs are now enabled");
@@ -86,6 +97,7 @@ export default function FillSquares() {
     const audio = new Audio(correctSound);
     audio.play();
     setTimeout(() => {
+      setRoundCounter((prev) => prev + 1); // Increment round counter
       setNumOfVisibleSquares(
         numOfActiveSquares <= 3
           ? numOfVisibleSquares + 2
@@ -121,7 +133,7 @@ export default function FillSquares() {
       <div id="container">
         {Array.from({ length: numOfSquares }, (_, index) => (
           <Square
-            key={index}
+            key={`${index}-${roundCounter}`}
             active={activeSquares.has(index)}
             visible={visibleSquares.has(index)}
             transitionStart={animationInterval.current?.get(index) ?? undefined}

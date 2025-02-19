@@ -21,10 +21,6 @@ function Square({
 
   useEffect(() => {
     setClicked(false);
-  }, [visible, active]);
-
-  useEffect(() => {
-    setClicked(false);
     if (transitionStart !== undefined && active) {
       const timer = setTimeout(() => {
         setClicked(true);
@@ -36,6 +32,11 @@ function Square({
       return () => clearTimeout(timer);
     }
   }, [transitionStart]);
+
+  // useEffect(() => {
+  //   // console.log("resetting clicked");
+  //   setClicked(false);
+  // }, []);
 
   const handleClick = () => {
     if (!clicked && !ignoreInputs && (visible || active)) {
