@@ -4,7 +4,7 @@ import { usePageContext } from "../../pages/start/startPageContext";
 import ScorePage from "../../pages/ScorePage";
 import correctSound from "../../assets/sound/correct.mp3";
 
-export const transition_time = 750;
+export const square_animation_time = 100; //base 750
 const square_size = 100;
 
 export default function FillSquares() {
@@ -16,6 +16,7 @@ export default function FillSquares() {
   const [showScorePage, setShowScorePage] = useState<boolean>(false);
   const [roundCounter, setRoundCounter] = useState(0);
   const { forward } = usePageContext();
+  const [showError, setShowError] = useState(false);
 
   // //update the number of squares based on the height of the container
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function FillSquares() {
     }
   }, []);
 
-  // loadingTime -= 2 * transition_time;
+  // loadingTime -= 2 * square_animation_time;
   const [activeSquares, setActiveSquares] = useState<Set<number>>(new Set());
   const [visibleSquares, setVisibleSquares] = useState<Set<number>>(new Set());
   const animationInterval = useRef<Map<number, number>>(new Map());
@@ -58,22 +59,17 @@ export default function FillSquares() {
     let counter = 3;
     let newLoadingTime = 0;
     for (const visibleIndex of newActiveSquares) {
-      newLoadingTime = Math.max(newLoadingTime, transition_time * counter);
-      newAnimationInterval.set(visibleIndex, transition_time * counter);
+      newLoadingTime = Math.max(
+        newLoadingTime,
+        square_animation_time * counter
+      );
+      newAnimationInterval.set(visibleIndex, square_animation_time * counter);
       counter++;
     }
 
-    newLoadingTime += 1 * transition_time;
+    newLoadingTime += 1 * square_animation_time;
 
     animationInterval.current = newAnimationInterval;
-
-    // const activeSquaresArray = Array.from(newActiveSquares);
-    // activeSquaresArray[activeSquaresArray.length - 1] = 5;
-    // newActiveSquares = new Set(activeSquaresArray);
-
-    // const visibleSquares = Array.from(newActiveSquares);
-    // visibleSquares[visibleSquares.length - 1] = 5;
-    // newVisibleSquares = new Set(visibleSquares);
 
     setActiveSquares(newActiveSquares);
     setVisibleSquares(newVisibleSquares);
@@ -95,6 +91,7 @@ export default function FillSquares() {
 
   function showNextPage() {
     const audio = new Audio(correctSound);
+    setInputsDisabled(true);
     audio.play();
     setTimeout(() => {
       setRoundCounter((prev) => prev + 1); // Increment round counter
@@ -116,7 +113,11 @@ export default function FillSquares() {
       }
       console.log("correct");
     } else {
-      setShowScorePage(true);
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+        setShowScorePage(true);
+      }, 3000); // Show error for 1 second before score page
     }
   };
 
@@ -134,10 +135,14 @@ export default function FillSquares() {
         {Array.from({ length: numOfSquares }, (_, index) => (
           <Square
             key={`${index}-${roundCounter}`}
-            active={activeSquares.has(index)}
+            isActive={activeSquares.has(index)}
             visible={visibleSquares.has(index)}
             transitionStart={animationInterval.current?.get(index) ?? undefined}
             ignoreInputs={inputsDisabled}
+            isError={showError && activeSquaresStack.includes(index)}
+            activeNumber={
+              activeSquaresStack.length - activeSquaresStack.indexOf(index)
+            }
             onClick={() => (!inputsDisabled ? checkIndex(index) : null)}
           />
         ))}

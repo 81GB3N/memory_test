@@ -9,6 +9,10 @@ button{
     display: block;
     box-shadow: 3px 3px rgba(12, 195, 251, 0.6);
     cursor: pointer;
+
+    color: white;
+    font-size: 1.5em;
+    font-weight: 900;
 }
 
 .square{
@@ -26,8 +30,15 @@ button.clicked{
     background-color: rgb(243, 248, 109);
     transform: scale(1.1);
     transition: background-color 0.75s ease, transform 0.75s ease;
+    box-shadow: 3px 3px rgba(237, 203, 8, 0.6);
 }
 
 button {
     transition: background-color 0.75s ease, transform 0.75s ease;
 }
+
+.square button.error {
+    background-color: rgb(29, 108, 29);
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    box-shadow: 3px 3px rgba(12, 239, 61, 0.6);
+  }

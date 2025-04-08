@@ -1,32 +1,36 @@
 import { useState, useEffect } from "react";
 import "./square.css";
-import { transition_time } from "./FillSquares";
+import { square_animation_time } from "./FillSquares";
 
 interface SquareProps {
   visible?: boolean;
-  active?: boolean;
+  isActive?: boolean;
   transitionStart: number | undefined;
   ignoreInputs: boolean;
+  isError: boolean;
+  activeNumber: number;
   onClick?: () => void;
 }
 
 function Square({
   visible = false,
   transitionStart,
-  active,
   ignoreInputs,
+  isActive,
   onClick,
+  isError,
+  activeNumber,
 }: SquareProps) {
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     setClicked(false);
-    if (transitionStart !== undefined && active) {
+    if (transitionStart !== undefined && isActive) {
       const timer = setTimeout(() => {
         setClicked(true);
         setTimeout(() => {
           setClicked(false);
-        }, transition_time); // Duration of the clicked state
+        }, square_animation_time); // Duration of the clicked state
       }, transitionStart);
 
       return () => clearTimeout(timer);
@@ -38,20 +42,28 @@ function Square({
   //   setClicked(false);
   // }, []);
 
-  const handleClick = () => {
-    if (!clicked && !ignoreInputs && (visible || active)) {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!clicked && !ignoreInputs && (visible || isActive)) {
       setClicked(true);
       onClick?.();
+      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
   return (
-    <div className={`square ${visible || active ? "" : "invisible"}`}>
+    <div className={`square ${visible || isActive ? "" : "invisible"}`}>
       <button
         disabled={ignoreInputs}
-        className={`${clicked ? "clicked" : ""}`}
+        className={`
+          ${clicked ? "clicked" : ""}
+          ${isError ? "error" : ""}
+        `}
         onClick={handleClick}
-      ></button>
+      >
+        {/* {isError && isActiveNumber} */}
+        {isActive && activeNumber}
+      </button>
     </div>
   );
 }
