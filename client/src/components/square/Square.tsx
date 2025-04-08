@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import "./square.css";
 import { square_animation_time } from "./FillSquares";
 
@@ -22,6 +22,7 @@ function Square({
   activeNumber,
 }: SquareProps) {
   const [clicked, setClicked] = useState(false);
+  const [wrongClicked, setWrongClicked] = useState(false);
 
   useEffect(() => {
     setClicked(false);
@@ -37,6 +38,10 @@ function Square({
     }
   }, [transitionStart]);
 
+  useEffect(() => {
+    setClicked(false);
+  }, [isError]);
+
   // useEffect(() => {
   //   // console.log("resetting clicked");
   //   setClicked(false);
@@ -44,8 +49,11 @@ function Square({
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!clicked && !ignoreInputs && (visible || isActive)) {
-      setClicked(true);
+      if (!isActive) {
+        setWrongClicked(true);
+      }
       onClick?.();
+      setClicked(true);
       event.preventDefault();
       event.stopPropagation();
     }
@@ -58,11 +66,11 @@ function Square({
         className={`
           ${clicked ? "clicked" : ""}
           ${isError ? "error" : ""}
+          ${wrongClicked ? "wrong-clicked" : ""}
         `}
         onClick={handleClick}
       >
-        {/* {isError && isActiveNumber} */}
-        {isActive && activeNumber}
+        {isError && activeNumber}
       </button>
     </div>
   );

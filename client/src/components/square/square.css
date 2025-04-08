@@ -11,6 +11,7 @@ button{
     cursor: pointer;
 
     color: white;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1.5em;
     font-weight: 900;
 }
@@ -26,19 +27,24 @@ button{
     visibility: hidden;
 }
 
+.square button.wrong-clicked{
+    background-color: rgb(202, 59, 54);
+    box-shadow: 3px 3px rgba(255, 34, 0, 0.6);
+    transition: background-color 0.75s ease, transform 0.75s ease, box-shadow 0.75s ease;
+}
+
 button.clicked{
     background-color: rgb(243, 248, 109);
     transform: scale(1.1);
-    transition: background-color 0.75s ease, transform 0.75s ease;
+    transition: background-color 0.75s ease, transform 0.75s ease, box-shadow 0.75s ease;
     box-shadow: 3px 3px rgba(237, 203, 8, 0.6);
 }
 
 button {
-    transition: background-color 0.75s ease, transform 0.75s ease;
+    transition: background-color 0.75s ease, transform 0.75s ease, box-shadow 0.75s ease;
 }
 
 .square button.error {
     background-color: rgb(29, 108, 29);
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     box-shadow: 3px 3px rgba(12, 239, 61, 0.6);
   }

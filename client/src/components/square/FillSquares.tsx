@@ -4,7 +4,7 @@ import { usePageContext } from "../../pages/start/startPageContext";
 import ScorePage from "../../pages/ScorePage";
 import correctSound from "../../assets/sound/correct.mp3";
 
-export const square_animation_time = 100; //base 750
+export const square_animation_time = 750; //base 750
 const square_size = 100;
 
 export default function FillSquares() {
