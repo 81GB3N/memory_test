@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import "./square.css";
 import { square_animation_time } from "./FillSquares";
 
